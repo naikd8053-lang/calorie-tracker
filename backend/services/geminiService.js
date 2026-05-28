@@ -2,33 +2,30 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const NUTRITION_PROMPT = `
-You are a precise nutrition analyzer. Given a meal description, return ONLY valid JSON with this exact structure:
-
+const NUTRITION_PROMPT = `You are a nutrition expert. Analyze the meal description and return ONLY valid JSON with this structure:
 {
   "foods": [
-    { "name": "food item name", "estimated_calories": number }
+    {
+      "name": "food name",
+      "estimated_calories": number,
+      "protein_g": number,
+      "fat_g": number,
+      "carbs_g": number
+    }
   ],
   "total_calories": number
 }
-
-Rules:
-- Estimate calories per serving (standard portion). For example, "2 roti" → 2 items each ~120 cal = 240 total.
-- Use realistic calorie values based on typical Indian/western foods.
-- If quantity not specified, assume 1 serving.
-- Respond with ONLY the JSON, no additional text.
+Use realistic values. Respond ONLY with JSON, no extra text.
 
 Meal description: `;
 
 export const analyzeMealWithGemini = async (mealDescription) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // fast & cheap
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(NUTRITION_PROMPT + mealDescription);
-    const responseText = result.response.text();
-    // Remove any markdown code blocks if present
-    const cleanJson = responseText.replace(/```json|```/g, '').trim();
-    const nutritionData = JSON.parse(cleanJson);
-    return nutritionData;
+    const text = result.response.text();
+    const clean = text.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
   } catch (error) {
     console.error("Gemini API Error:", error.message);
     throw new Error("Failed to analyze meal with Gemini");

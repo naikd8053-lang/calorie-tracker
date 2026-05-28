@@ -1,0 +1,7 @@
+cd backend
+node server.js
+
+
+
+cd calorie-app
+npm run dev

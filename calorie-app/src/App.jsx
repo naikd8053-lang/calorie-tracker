@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Diary from './pages/Diary';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import MealPlanner from './pages/MealPlanner';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/diary" element={<Diary />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/planner" element={<MealPlanner />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" toastOptions={{ className: 'glass-card' }} />

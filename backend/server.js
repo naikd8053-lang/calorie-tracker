@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import logRoutes from './routes/logs.js';
 import userRoutes from './routes/users.js';
+import predictRoutes from './routes/predict.js';
+import plannerRoutes from './routes/planner.js';
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/logs', logRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/predict', predictRoutes);
+app.use('/api/planner', plannerRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
